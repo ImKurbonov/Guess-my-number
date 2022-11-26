@@ -1,59 +1,60 @@
-const between = document.querySelector('.between')
-const againBtn = document.querySelector('.again')
-const number = document.querySelector('.number')
-const guess = document.querySelector('.guess')
-const checkBtn = document.querySelector('.check')
-const message = document.querySelector('.message')
-const score = document.querySelector('.score')
-const highscore = document.querySelector('.highscore')
+let againBtn = document.querySelector('.again')
+let number = document.querySelector('.number')
+let guess = document.querySelector('.guess')
+let checkBtn = document.querySelector('.check')
+let message = document.querySelector('.message')
+let score = document.querySelector('.score')
+let heighscore = document.querySelector('.highscore')
+let body = document.querySelector('body')
 
-let randomNumber = Math.floor(Math.random() * 20) + 1
-console.log(randomNumber)
 let gameScore = 20
 let gameHighScore = 0
 let gameOver = false
+let randomNumber = Math.floor(Math.random() * 20 + 1)
+console.log(randomNumber)
 
 checkBtn.addEventListener('click', ()=> {
     let myNumber = +guess.value
-    if(!myNumber) {
-        message.textContent = 'Type any number'
-    } else {
-        if(myNumber < randomNumber) {
-            document.body.style.backgroundColor = '#222'
+    if(!gameOver) {
+        if(myNumber) {
+            if(randomNumber == myNumber) {
+                body.style.backgroundColor = 'green'
+                message.textContent = 'You are win 🥇'
+                number.textContent = randomNumber
+                gameScore ++
+             
+                if(gameScore > gameHighScore) {
+                    gameHighScore = gameScore
+                    heighscore.textContent = gameHighScore
+                }
+        
+            } else if(myNumber > randomNumber) {
+                message.textContent = "To down"
+                gameScore --
+                if(gameScore === 0) {
+                    gameOver = true
+                }
+        
+            } else if(myNumber < randomNumber) {
+                message.textContent = "To up"
+                gameScore --
+                if(gameScore === 0) {
+                    gameOver = true
+                }
+            }
             score.textContent = gameScore
-            gameScore--
-            message.textContent = 'To up'
-            if(gameScore == 0) {
-                gameOver = true
+            } else {
+                message.textContent = "Type number"
             }
-    
-        } else if(myNumber > randomNumber) {
-            document.body.style.backgroundColor = '#222'
-            score.textContent = gameScore
-            gameScore--
-            message.textContent = 'To down'
-            if(gameScore == 0) {
-                gameOver = true
-            }
-    
-        } else if(myNumber == randomNumber) {
-            document.body.style.backgroundColor = '#60b347'
-            message.textContent = 'You are win..🥇'
-            number.textContent = myNumber
-    
-            if(gameHighScore < gameScore) {
-                gameHighScore = gameScore
-                highscore.textContent = gameHighScore
-            }
-        }
     }
 })
 
-againBtn.addEventListener('click', ()=> {
-    document.body.style.backgroundColor = '#222'
-    number.textContent = '?'
-    message.textContent = 'Start guessing...'
-    guess.value = ''
+againBtn.addEventListener("click", ()=> {
+    body.style.backgroundColor = '#222'
     gameScore = 20
     score.textContent = gameScore
+    message.textContent = 'Start guessing...'
+    number.textContent = '?'
+    guess.value = ''
+    gameOver = false
 })
